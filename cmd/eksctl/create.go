@@ -137,6 +137,10 @@ func doCreateCluster(cfg *api.ClusterConfig, name string) error {
 		return fmt.Errorf("--ssh-public-key must be non-empty string")
 	}
 
+	if cfg.SSHPublicKeyPath != DEFAULT_SSH_PUBLIC_KEY && !cfg.NodeSSH {
+		logger.Warning("--ssh-public-key used with --ssh-access=false, you will not be able to ssh to the nodes")
+	}
+
 	if err := ctl.SetAvailabilityZones(availabilityZones); err != nil {
 		return err
 	}
